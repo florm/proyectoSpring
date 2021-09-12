@@ -1,5 +1,7 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
+import ar.edu.unlam.tallerweb1.controladores.DatosRegistro;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +23,13 @@ public class Usuario {
 	private String password;
 	private String rol;
 	private Boolean activo = false;
-	
+
+	public Usuario(){}
+	public Usuario(DatosRegistro datosRegistro) {
+		this.email = datosRegistro.getEmail();
+		this.password = datosRegistro.getClave();
+	}
+
 	public Long getId() {
 		return id;
 	}

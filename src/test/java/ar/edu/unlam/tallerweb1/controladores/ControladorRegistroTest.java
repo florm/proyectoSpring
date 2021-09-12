@@ -2,6 +2,8 @@ package ar.edu.unlam.tallerweb1.controladores;
 
 
 
+import ar.edu.unlam.tallerweb1.repositorios.TablaUsuario;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,11 +20,15 @@ public class ControladorRegistroTest {
      * 2.Si las claves son distintas el registro falla >>> OK
      * 3.Si la clave tiene menoss de 8 caracteres el registro falla >>> OK
      * 4.Si el email es invalido el registro falla >>> TODO
-     *
+     * 5.Si el usuario existe el registro falla
      * */
     private ControladorRegistro controladorRegistro = new ControladorRegistro();
     private ModelAndView mav;
 
+    @Before
+    public void init(){
+        TablaUsuario.getInstance().reset();
+    }
 
     @Test
     public void siElUsuarioNoExisteYLasClavesSonIgualesElRegistroEsExitoso() {
@@ -43,6 +49,18 @@ public class ControladorRegistroTest {
         givenUsuarioNoExiste();
         whenRegistroUnUsuarioConClaves(EMAIL, CLAVE_LONGITUD_INCORRECTA, CLAVE_LONGITUD_INCORRECTA);
         thenElRegistroFalla("La clave debe tener al menos 8 caracteres");
+    }
+
+    @Test
+    public void siElUsuarioExisteElRegistroFall(){
+        givenExisteUsuario(EMAIL, CLAVE);
+        whenRegistroUnUsuarioConClaves(EMAIL, CLAVE, CLAVE);
+        thenElRegistroFalla("El usuario ya se encuentra registrado");
+
+    }
+
+    private void givenExisteUsuario(String email, String clave) {
+        controladorRegistro.registrar(new DatosRegistro(email, clave, clave));
     }
 
 
