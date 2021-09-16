@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 public class ControladorPrueba {
+
 
     @RequestMapping(path = "/saludar", method = RequestMethod.GET)
     public ModelAndView saludar1(){
@@ -16,4 +18,6 @@ public class ControladorPrueba {
         modelo.put("mensaje2", "Soy flor!");
         return new ModelAndView("saludo", modelo);
     }
+
+
 }

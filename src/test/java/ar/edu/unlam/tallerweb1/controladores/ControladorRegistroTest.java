@@ -52,7 +52,7 @@ public class ControladorRegistroTest {
     }
 
     @Test
-    public void siElUsuarioExisteElRegistroFall(){
+    public void siElUsuarioExisteElRegistroFalla(){
         givenExisteUsuario(EMAIL, CLAVE);
         whenRegistroUnUsuarioConClaves(EMAIL, CLAVE, CLAVE);
         thenElRegistroFalla("El usuario ya se encuentra registrado");
