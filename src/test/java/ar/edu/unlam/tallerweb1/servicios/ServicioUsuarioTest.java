@@ -1,6 +1,5 @@
 package ar.edu.unlam.tallerweb1.servicios;
 
-import ar.edu.unlam.tallerweb1.controladores.ControladorRegistro;
 import ar.edu.unlam.tallerweb1.controladores.DatosRegistro;
 import ar.edu.unlam.tallerweb1.modelo.Usuario;
 import ar.edu.unlam.tallerweb1.repositorios.TablaUsuario;
@@ -12,7 +11,7 @@ public class ServicioUsuarioTest {
     private static final String EMAIL = "flor@gmail.com";
     private static final String CLAVE = "123456789";
     private static final String CLAVE_LONG_INCORRECTA = "1234";
-    private ServicioUsuario servicioUsuario = new ServicioUsuario();
+    private ServicioUsuarioImpl servicioUsuario = new ServicioUsuarioImpl();
 
     @Before
     public void init(){

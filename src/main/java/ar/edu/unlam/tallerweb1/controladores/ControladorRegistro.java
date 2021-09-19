@@ -1,11 +1,6 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
-import ar.edu.unlam.tallerweb1.modelo.Usuario;
-import ar.edu.unlam.tallerweb1.repositorios.TablaUsuario;
-import ar.edu.unlam.tallerweb1.servicios.ClaveLongitudIncorrectaException;
-import ar.edu.unlam.tallerweb1.servicios.ClavesDistintasException;
-import ar.edu.unlam.tallerweb1.servicios.ServicioUsuario;
-import ar.edu.unlam.tallerweb1.servicios.UsuarioYaExisteException;
+import ar.edu.unlam.tallerweb1.servicios.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,9 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ControladorRegistro {
 
+    private ServicioUsuario servicioUsuario;
 
-    private TablaUsuario tablaUsuario = TablaUsuario.getInstance();
-    private ServicioUsuario servicioUsuario = new ServicioUsuario();
+    public ControladorRegistro(ServicioUsuario servicioUsuario){
+        this.servicioUsuario = servicioUsuario;
+    }
 
     //voy al registro del usuario
     @RequestMapping(path = "/registrar-usuario", method = RequestMethod.GET)

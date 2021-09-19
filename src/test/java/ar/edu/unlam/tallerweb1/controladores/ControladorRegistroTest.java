@@ -3,17 +3,16 @@ package ar.edu.unlam.tallerweb1.controladores;
 
 
 import ar.edu.unlam.tallerweb1.repositorios.TablaUsuario;
+import ar.edu.unlam.tallerweb1.servicios.ServicioUsuario;
+import ar.edu.unlam.tallerweb1.servicios.ServicioUsuarioImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class ControladorRegistroTest {
-    public static final String EMAIL = "flor@gmail.com";
-    public static final String CLAVE = "12345789";
-    public static final String CLAVE_DISTINTA = "12344555555";
-    public static final String CLAVE_LONGITUD_INCORRECTA = "1234";
 
     /*
      * 1.Si el usuario no existe y las claves son iguales el registro es exitoso >>> OK
@@ -22,7 +21,16 @@ public class ControladorRegistroTest {
      * 4.Si el email es invalido el registro falla >>> TODO
      * 5.Si el usuario existe el registro falla
      * */
-    private ControladorRegistro controladorRegistro = new ControladorRegistro();
+
+
+    public static final String EMAIL = "flor@gmail.com";
+    public static final String CLAVE = "12345789";
+    public static final String CLAVE_DISTINTA = "12344555555";
+    public static final String CLAVE_LONGITUD_INCORRECTA = "1234";
+    private ServicioUsuario servicioUsuario = new ServicioUsuarioImpl();
+
+
+    private ControladorRegistro controladorRegistro = new ControladorRegistro(servicioUsuario);
     private ModelAndView mav;
 
     @Before
