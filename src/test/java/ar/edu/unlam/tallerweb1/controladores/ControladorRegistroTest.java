@@ -3,13 +3,14 @@ package ar.edu.unlam.tallerweb1.controladores;
 
 
 import ar.edu.unlam.tallerweb1.repositorios.TablaUsuario;
-import ar.edu.unlam.tallerweb1.servicios.ServicioUsuario;
-import ar.edu.unlam.tallerweb1.servicios.ServicioUsuarioImpl;
+import ar.edu.unlam.tallerweb1.servicios.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 public class ControladorRegistroTest {
@@ -27,44 +28,70 @@ public class ControladorRegistroTest {
     public static final String CLAVE = "12345789";
     public static final String CLAVE_DISTINTA = "12344555555";
     public static final String CLAVE_LONGITUD_INCORRECTA = "1234";
-    private ServicioUsuario servicioUsuario = new ServicioUsuarioImpl();
+
+    private ServicioUsuario servicioUsuario;
 
 
-    private ControladorRegistro controladorRegistro = new ControladorRegistro(servicioUsuario);
+    private ControladorRegistro controladorRegistro;
     private ModelAndView mav;
+
 
     @Before
     public void init(){
         TablaUsuario.getInstance().reset();
+        servicioUsuario = mock(ServicioUsuario.class);
+        controladorRegistro = new ControladorRegistro(servicioUsuario);
     }
 
     @Test
     public void siElUsuarioNoExisteYLasClavesSonIgualesElRegistroEsExitoso() {
         givenUsuarioNoExiste();
-        whenRegistroUnUsuarioConClaves(EMAIL, CLAVE, CLAVE);
+        DatosRegistro datosRegistro = givenDatosDeRegistro(EMAIL, CLAVE, CLAVE);
+        whenRegistroUnUsuarioConClaves(datosRegistro);
         thenElregistroEsExitoso();
     }
 
     @Test
     public void siLasClavesSonDistintasElRegistroFalla() {
         givenUsuarioNoExiste();
-        whenRegistroUnUsuarioConClaves(EMAIL, CLAVE, CLAVE_DISTINTA);
+        DatosRegistro datosRegistro = givenDatosDeRegistro(EMAIL, CLAVE, CLAVE_DISTINTA);
+        doThrow(ClavesDistintasException.class)
+                .when(servicioUsuario)
+                .registrar(datosRegistro);
+        whenRegistroUnUsuarioConClaves(datosRegistro);
         thenElRegistroFalla("Las claves deben ser iguales");
     }
 
     @Test
     public void siLaClaveTieneMenosDeOchoCaracteresElRegistroFalla() {
         givenUsuarioNoExiste();
-        whenRegistroUnUsuarioConClaves(EMAIL, CLAVE_LONGITUD_INCORRECTA, CLAVE_LONGITUD_INCORRECTA);
+        DatosRegistro datosRegistro = givenDatosDeRegistro(EMAIL, CLAVE_LONGITUD_INCORRECTA, CLAVE_LONGITUD_INCORRECTA);
+        doThrow(ClaveLongitudIncorrectaException.class)
+                .when(servicioUsuario)
+                .registrar(datosRegistro);
+        whenRegistroUnUsuarioConClaves(datosRegistro);
         thenElRegistroFalla("La clave debe tener al menos 8 caracteres");
     }
 
     @Test
     public void siElUsuarioExisteElRegistroFalla(){
         givenExisteUsuario(EMAIL, CLAVE);
-        whenRegistroUnUsuarioConClaves(EMAIL, CLAVE, CLAVE);
+        DatosRegistro datosRegistro = givenDatosDeRegistro(EMAIL, CLAVE, CLAVE);
+        doThrow(UsuarioYaExisteException.class)
+                .when(servicioUsuario)
+                .registrar(datosRegistro);
+        whenRegistroUnUsuarioConClaves(datosRegistro);
         thenElRegistroFalla("El usuario ya se encuentra registrado");
 
+    }
+
+    private void whenRegistroUnUsuarioConClaves(DatosRegistro datosRegistro) {
+        mav = controladorRegistro.registrar(datosRegistro);
+    }
+
+    private DatosRegistro givenDatosDeRegistro(String email, String clave, String repiteClave) {
+        DatosRegistro datosRegistro = new DatosRegistro(email, clave, repiteClave);
+        return datosRegistro;
     }
 
     private void givenExisteUsuario(String email, String clave) {
@@ -78,11 +105,6 @@ public class ControladorRegistroTest {
     }
 
     private void givenUsuarioNoExiste() {
-    }
-
-    private void whenRegistroUnUsuarioConClaves(String email, String clave, String repiteClave) {
-        DatosRegistro datosRegistro = new DatosRegistro(email, clave, repiteClave);
-        mav = controladorRegistro.registrar(datosRegistro);
     }
 
     private void thenElregistroEsExitoso() {
