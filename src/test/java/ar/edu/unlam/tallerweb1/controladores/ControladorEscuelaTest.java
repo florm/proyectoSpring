@@ -1,13 +1,17 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.modelo.Escuela;
 import ar.edu.unlam.tallerweb1.servicios.CampoVacioException;
 import ar.edu.unlam.tallerweb1.servicios.ServicioEscuela;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class ControladorEscuelaTest {
 
@@ -34,7 +38,6 @@ public class ControladorEscuelaTest {
         thenLaCreacionFalla();
     }
 
-
     private DatosEscuela givenExistenDatosDeEscuela(String nombre) {
         return new DatosEscuela(nombre);
 
@@ -50,8 +53,7 @@ public class ControladorEscuelaTest {
     }
 
     private void thenLaEscuelaSeCreaCorrectamente() {
-        assertThat(mav.getViewName()).isEqualTo("listaEscuelas");
-        assertThat(mav.getModel().get("listaEscuelas")).isNotNull();
+        assertThat(mav.getViewName()).isEqualTo("redirect:/listar-escuelas");
     }
 
     private void thenLaCreacionFalla() {

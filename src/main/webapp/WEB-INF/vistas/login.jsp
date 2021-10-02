@@ -32,6 +32,10 @@
 		        </c:if>
 				${msg}
 			</div>
+
+			<a href="crear-escuela">Crear Escuela</a>
+			<a href="listar-escuelas">Listar Escuela</a>
+
 		</div>
 		
 		<!-- Placed at the end of the document so the pages load faster -->
