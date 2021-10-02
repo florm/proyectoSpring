@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 
 public class ControladorRegistroTest {
@@ -26,13 +29,14 @@ public class ControladorRegistroTest {
     public static final String CLAVE_DISTINTA = "12344555555";
     public static final String CLAVE_LONGITUD_INCORRECTA = "1234";
 
-    private ServicioUsuario servicioUsuario = new ServicioUsuarioImpl();
-    private ControladorRegistro controladorRegistro = new ControladorRegistro(servicioUsuario);
+    private ServicioUsuario servicioUsuario;
+    private ControladorRegistro controladorRegistro;
     private ModelAndView mav;
 
     @Before
     public void init(){
-        TablaUsuario.getInstance().reset();
+        servicioUsuario = mock(ServicioUsuario.class);
+        controladorRegistro = new ControladorRegistro(servicioUsuario);
     }
 
     @Test
@@ -47,6 +51,11 @@ public class ControladorRegistroTest {
     public void siLasClavesSonDistintasElRegistroFalla() {
         givenUsuarioNoExiste();
         DatosRegistro datosRegistro = givenExisteDatoDeRegistro(EMAIL, CLAVE, CLAVE_DISTINTA);
+
+        doThrow(ClavesDistintasException.class)
+                .when(servicioUsuario)
+                .registrar(datosRegistro);
+
         whenRegistroUnUsuarioCon(datosRegistro);
         thenElRegistroFalla("Las claves deben ser iguales");
     }
@@ -55,6 +64,11 @@ public class ControladorRegistroTest {
     public void siLaClaveTieneMenosDeOchoCaracteresElRegistroFalla() {
         givenUsuarioNoExiste();
         DatosRegistro datosRegistro = givenExisteDatoDeRegistro(EMAIL, CLAVE_LONGITUD_INCORRECTA, CLAVE_LONGITUD_INCORRECTA);
+
+        doThrow(ClaveLongitudIncorrectaException.class)
+                .when(servicioUsuario)
+                .registrar(datosRegistro);
+
         whenRegistroUnUsuarioCon(datosRegistro);
         thenElRegistroFalla("La clave debe tener al menos 8 caracteres");
     }
@@ -63,6 +77,14 @@ public class ControladorRegistroTest {
     public void siElUsuarioExisteElRegistroFalla(){
         givenExisteUsuario(EMAIL, CLAVE);
         DatosRegistro datosRegistro = givenExisteDatoDeRegistro(EMAIL, CLAVE, CLAVE);
+
+        doThrow(UsuarioYaExisteException.class)
+                .when(servicioUsuario)
+                .registrar(datosRegistro);
+
+        //otra forma de lanzar excepcion, cuando el metodo no es void
+        //when(servicioUsuario.registrar(datosRegistro)).thenThrow(UsuarioYaExisteException.class);
+
         whenRegistroUnUsuarioCon(datosRegistro);
         thenElRegistroFalla("El usuario ya se encuentra registrado");
 
