@@ -84,13 +84,13 @@ public class ServicioUsuarioTest {
 
     private void thenElRegistroEsExitoso(Usuario usuarioRegistrado) {
         assertThat(usuarioRegistrado).isNotNull();
-
-        //verifica que se llama al repositorioUsuario.guardar(..)
-        verify(repositorioUsuario).guardar(usuarioRegistrado);
-
-        //si el repositorioUsuario.guardar(...) NO fuera void se podria utilizar el verify de la siguiente forma, donde
         //times(1) indica la cantidad de veces que se deberia invocar el metodo
-        //verify(repositorioUsuario.guardar(usuarioRegistrado), times(1));
+        verify(repositorioUsuario, times(1)).guardar(usuarioRegistrado);
+
+        //verifica que se llama al repositorioUsuario.guardar(..), otra forma:
+        //verify(repositorioUsuario).guardar(usuarioRegistrado);
+
+
 
 
     }

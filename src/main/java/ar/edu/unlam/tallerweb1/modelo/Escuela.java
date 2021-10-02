@@ -1,5 +1,7 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
+import ar.edu.unlam.tallerweb1.controladores.DatosEscuela;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,11 @@ public class Escuela {
 
     @Column(nullable = false)
     private String nombre;
+
+    public Escuela(){}
+    public Escuela(DatosEscuela datos){
+        this.nombre = datos.getNombre();
+    }
 
     public Long getId() {
         return id;

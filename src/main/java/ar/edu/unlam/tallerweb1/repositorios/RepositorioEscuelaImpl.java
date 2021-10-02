@@ -37,4 +37,11 @@ public class RepositorioEscuelaImpl implements RepositorioEscuela {
                 .add(Restrictions.eq("nombre", nombreBuscado))
                 .list();
     }
+
+    @Override
+    public List<Escuela> buscarTodas() {
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Escuela.class)
+                .list();
+    }
 }

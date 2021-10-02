@@ -34,12 +34,41 @@ public class RepositorioEscuelaTest extends SpringTest {
         givenGuardoEscuela(escuela1);
         givenGuardoEscuela(escuela2);
         givenGuardoEscuela(escuela3);
+        List<Escuela> escuelasBuscadas = whenBuscoEscuelaPorNombre("Juan");
         Integer cantidadEsperada = 2;
-        thenEncuentroLaEscuelaConNombre("Juan", cantidadEsperada);
+        thenEncuentroLaEscuelaConNombre(escuelasBuscadas, cantidadEsperada);
     }
 
-    private void thenEncuentroLaEscuelaConNombre(String nombre, int cantidadEsperada) {
-        List<Escuela> escuelasBuscadas = repositorioEscuela.buscarPor(nombre);
+    private List<Escuela> whenBuscoEscuelaPorNombre(String nombre) {
+        return repositorioEscuela.buscarPor(nombre);
+    }
+
+
+    @Test
+    @Transactional
+    @Rollback
+    public void sePuedenBuscarTodasLasEscuelas(){
+        Escuela escuela1 = givenExisteUnaEscuela("Juan");
+        Escuela escuela2 = givenExisteUnaEscuela("Pedro");
+        Escuela escuela3 = givenExisteUnaEscuela("Juan");
+        givenGuardoEscuela(escuela1);
+        givenGuardoEscuela(escuela2);
+        givenGuardoEscuela(escuela3);
+        Integer cantidadEsperada = 3;
+        List<Escuela> todas = whenBuscoTodasLasEscuelas();
+        thenEncuentroTodasLasEscuelas(todas, cantidadEsperada);
+
+    }
+
+    private List<Escuela> whenBuscoTodasLasEscuelas() {
+        return repositorioEscuela.buscarTodas();
+    }
+
+    private void thenEncuentroTodasLasEscuelas(List<Escuela> todas, Integer cantidadEsperada) {
+        assertThat(todas).hasSize(cantidadEsperada);
+    }
+
+    private void thenEncuentroLaEscuelaConNombre(List<Escuela> escuelasBuscadas, int cantidadEsperada) {
         assertThat(escuelasBuscadas).hasSize(cantidadEsperada);
     }
 

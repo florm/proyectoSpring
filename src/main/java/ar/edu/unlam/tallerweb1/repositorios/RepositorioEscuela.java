@@ -11,4 +11,6 @@ public interface RepositorioEscuela {
     Escuela buscarPor(Long id);
 
     List<Escuela> buscarPor(String nombre);
+
+    List<Escuela> buscarTodas();
 }
