@@ -1,5 +1,8 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.modelo.Producto;
+import ar.edu.unlam.tallerweb1.servicios.ServicioProducto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,10 +11,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 
 @Controller
 public class ControladorPrueba {
 
+    public ServicioProducto servicioProducto;
+
+    @Autowired
+    public ControladorPrueba(ServicioProducto servicioProducto){
+        this.servicioProducto = servicioProducto;
+    }
 
     @RequestMapping(path = "/saludar", method = RequestMethod.GET)
     public ModelAndView saludar1(){
@@ -35,6 +46,13 @@ public class ControladorPrueba {
         return new ModelAndView("form-ejemplo", modelo);
     }
 
+    @RequestMapping("/productos")
+    public ModelAndView getListaConStock(@RequestParam("stock") Integer stock){
+        ModelMap modelo = new ModelMap();
+        List<Producto> productos = servicioProducto.getProductosConStock(stock);
+        modelo.put("productos", productos);
+        return new ModelAndView("listaProductos", modelo);
+    }
 
 
 }

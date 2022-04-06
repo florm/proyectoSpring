@@ -8,5 +8,8 @@
     <p>Mensaje 2: ${mensaje2}<p/>
 </c:if>
 
+<input type="number">
+<a href="producto"></a>
+
 
 
