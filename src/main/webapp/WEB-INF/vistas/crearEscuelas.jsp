@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<form:form action="guardar-escuela" method="post" modelAttribute="datosEscuela">
+<form:form action="./guardar-escuela" method="post" modelAttribute="datosEscuela">
     <form:input path="nombre"></form:input>
     <form:button>Guardar</form:button>
 </form:form>
