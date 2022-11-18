@@ -26,7 +26,8 @@ public class RepositorioProductoImpl implements RepositorioProducto {
 
     @Override
     public List<Producto> listarProductosConStockMayor(Integer stock) {
-        return sessionFactory.getCurrentSession().createCriteria(Producto.class)
+        return sessionFactory.getCurrentSession()
+                .createCriteria(Producto.class)
                 .add(Restrictions.gt("stock", stock))
                 .list();
     }

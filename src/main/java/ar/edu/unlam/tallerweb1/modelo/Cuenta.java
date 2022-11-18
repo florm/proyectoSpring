@@ -1,26 +1,19 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-public class Cliente {
+public class Cuenta {
 
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    @OneToOne
-    private Cuenta cuenta;
 
-    public Cuenta getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    public Cliente(){}
-    public Cliente(String nombre){
+    public Cuenta(){}
+    public Cuenta(String nombre){
         this.nombre = nombre;
     }
 

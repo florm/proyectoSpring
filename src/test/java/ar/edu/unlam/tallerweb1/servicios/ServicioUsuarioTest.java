@@ -89,6 +89,9 @@ public class ServicioUsuarioTest {
 
         //verifica que se llama al repositorioUsuario.guardar(..), otra forma:
         //verify(repositorioUsuario).guardar(usuarioRegistrado);
+//        otros metodos utiles
+//        verify(repositorioUsuario, atLeastOnce()).guardar(usuarioRegistrado);
+//        verify(repositorioUsuario, never()).guardar(usuarioRegistrado);
 
 
 

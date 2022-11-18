@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,11 @@ public class ControladorEscuelaTest {
         DatosEscuela datosEscuela = givenExistenDatosDeEscuela(NOMBRE);
         whenGuardoEscuelaConNombre(datosEscuela);
         thenLaEscuelaSeCreaCorrectamente();
-    
+        String prueba = System.getProperty("user.dir") + "\\carpetaCreada";
+
+
+        File fn = new File("carpetaNueva/archivoNuevo.txt");
+        var b =  fn.getAbsolutePath();
     }
 
     @Test

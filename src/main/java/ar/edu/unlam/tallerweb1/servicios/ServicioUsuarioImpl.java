@@ -30,6 +30,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if(repositorioUsuario.buscar(datosRegistro.getEmail()) != null){
             throw new UsuarioYaExisteException();
         }
+
         Usuario nuevoUsuario = new Usuario(datosRegistro);
         repositorioUsuario.guardar(nuevoUsuario);
         return nuevoUsuario;

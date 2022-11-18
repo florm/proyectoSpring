@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RepositorioFactura {
     List<Factura> buscarPor(Cliente cliente1);
+    List<Factura> buscarPorIdCliente(Long cliente1);
+
 }
